@@ -19,12 +19,15 @@ public class ResponseDto {
 
     @NotNull(message = "Name can't be null")
     @NotBlank(message = "Name can't be Blank")
+    @Schema(example = "username")
     private String username;
 
     @Email
     @NotBlank(message = "Email can't be empty")
+    @Schema(example = "username@gmail.com")
     private String email;
 
+    @Schema(example = "admin, user")
     private String role;
 
 }
