@@ -11,6 +11,7 @@ import com.simpleshowassignment.userProject.service.IUserService;
 import com.simpleshowassignment.userProject.util.UserErrorResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,10 +48,14 @@ public class UserServiceImpl  implements IUserService {
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
-        log.info("user getting created");
-        User saveUser = userRepository.save(user);
-        log.info("user got saved");
-        return userMapper.convertToResponseDto(saveUser);
+        try {
+            log.info("Creating user with email: {}", user.getEmail());
+            User savedUser = userRepository.save(user);
+            return userMapper.convertToResponseDto(savedUser);
+        } catch (DataIntegrityViolationException ex) {
+            log.error("Error creating user: {}", ex.getMessage());
+            throw new DataIntegrityViolationException("Email already exists.");
+        }
     }
 
     @Override

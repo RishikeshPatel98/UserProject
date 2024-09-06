@@ -25,6 +25,7 @@ public class UserDto {
     @Email
     @NotBlank(message = "Email can't be empty")
     @Schema(example = "username@gmail.com")
+
     private String email;
 
     @Schema(example = "123345")

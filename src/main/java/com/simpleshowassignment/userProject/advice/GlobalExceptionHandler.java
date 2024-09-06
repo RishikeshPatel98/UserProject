@@ -3,6 +3,10 @@ package com.simpleshowassignment.userProject.advice;
 import com.simpleshowassignment.userProject.exception.ErrorResponse;
 import com.simpleshowassignment.userProject.exception.UserNotFoundException;
 import com.simpleshowassignment.userProject.exception.UserProjectException;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,8 +17,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
         private UserProjectException userProjectException;
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -34,6 +38,22 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(buildErrorResponse(errorMessage), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex){
+        String errorMessage = "Data integrity violation: " + extractRootCauseMessage(ex);
+        log.error("Data integrity violation: {}", errorMessage);
+
+        return new ResponseEntity<>(buildErrorResponse(errorMessage), HttpStatus.CONFLICT);
+    }
+    private String extractRootCauseMessage(Throwable throwable) {
+        Throwable rootCause = throwable;
+        while (rootCause.getCause() != null && rootCause != rootCause.getCause()) {
+            rootCause = rootCause.getCause();
+        }
+        return rootCause.getMessage();
+    }
+
 
     private ErrorResponse buildErrorResponse(String errorMessage) {
         return ErrorResponse.builder()

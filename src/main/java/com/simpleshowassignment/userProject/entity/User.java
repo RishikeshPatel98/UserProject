@@ -18,7 +18,9 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "`user`")
+@Table(name = "`user`", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public class User {
 
     @Id
@@ -36,6 +38,7 @@ public class User {
 
     @Email
     @NotEmpty(message = "Email can't be empty")
+    @Column(unique = true)
     private String email;
 
     private String password;
