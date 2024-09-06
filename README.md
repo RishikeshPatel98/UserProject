@@ -1,0 +1,2 @@
+# UserProject - Demo Application for Managing Users
+This is a simple RESTful API application built using Spring Boot 3+ and Java 17 that allows users to perform CRUD operations (Create, Retrieve, Update, and Delete) on User records. The app uses H2 Database for simplicity and Spring Data JPA for database interactions. This application demonstrates the creation of a basic user management system and API.
