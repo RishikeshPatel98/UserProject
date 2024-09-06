@@ -28,6 +28,7 @@ public class UserDto {
     private String email;
 
     @Schema(example = "123345")
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 
     @Schema(example = "admin, user")

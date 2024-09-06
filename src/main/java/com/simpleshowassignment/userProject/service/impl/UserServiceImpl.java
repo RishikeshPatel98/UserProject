@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -27,17 +28,25 @@ import java.util.stream.Collectors;
 public class UserServiceImpl  implements IUserService {
 
     @Autowired
-    public UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    public UserPagingAndSortingRepository userPagingAndSortingRepository;
+    private UserPagingAndSortingRepository userPagingAndSortingRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public ResponseDto createUser(UserDto userdto) {
         User user = userMapper.convertToEntity(userdto);
+
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+
         log.info("user getting created");
         User saveUser = userRepository.save(user);
         log.info("user got saved");
