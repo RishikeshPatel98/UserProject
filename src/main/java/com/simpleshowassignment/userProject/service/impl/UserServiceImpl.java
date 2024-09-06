@@ -63,30 +63,22 @@ public class UserServiceImpl  implements IUserService {
         log.info("getting user by id " + id);
         Optional<User> user = userRepository.findById(id);
 
-        // Handle the case where the user is not found
         if (user.isPresent()) {
-            // Convert the found User entity to UserDto
             return userMapper.convertToResponseDto(user.get());
         } else {
-            // Handle the case where the user is not found, e.g., throw an exception or return null
             throw new UserNotFoundException(UserErrorResponseUtil.buildErrorResponse("user not found with this id " + id, null));
-            // Alternatively, return null or handle it in another way
-            // return null;
         }
     }
 
     @Override
     public List<ResponseDto> getAllUsers(Integer pageNumber, Integer pageSize) {
-        // Create the pageable object
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        // Fetch paginated users from the repository
         Page<User> usersPage = userPagingAndSortingRepository.findAll(pageable);
 
-        // Convert the Page<User> into List<ResponseDto>
         List<ResponseDto> responseDtoList = usersPage
                 .stream()
-                .map(userMapper::convertToResponseDto)  // Lambda function to convert each user to ResponseDto
+                .map(userMapper::convertToResponseDto)
                 .collect(Collectors.toList());
         log.info("getting users according to page number and page size requested");
         return responseDtoList;

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,9 @@ public class UserServiceTest {
     @Mock
     private UserPagingAndSortingRepository userPagingAndSortingRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private UserDto userDto;
     private User user;
     private ResponseDto responseDto;
@@ -52,8 +56,8 @@ public class UserServiceTest {
 
         // Initialize UserDto and ResponseDto
         userDto = new UserDto();
-        userDto.setId(userId);
         userDto.setUsername("John Doe");
+        userDto.setPassword("12345");
 
         responseDto = new ResponseDto();
         responseDto.setId(userId);
