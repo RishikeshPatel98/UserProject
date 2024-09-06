@@ -25,6 +25,11 @@ mvn clean install
 
 ***Note - Before Running Maven Install Make Sure to Configure application.properties for local setup***
 
+# Access the OpenAPI Documentation
+```bash
+http://localhost:8080/swagger-ui/index.html
+```
+
 # H2 Database Configuration
 - spring.application.name=userProject
 
