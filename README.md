@@ -9,6 +9,7 @@ This is a simple RESTful API application built using Spring Boot 3+ and Java 17 
 # Getting Started
 # Prerequisites
   - Java 17 or higher installed on your machine.
+  - Spring Boot (3+).
   - Maven (for building the project).
 
 ## Local Setup
